@@ -83,13 +83,14 @@ public:
     void printList() {
         int number = 1;
         Node<T> *temp = head;
-        int count = 5;
-        while (count != 0) { //(temp != nullptr)
+        if (head == nullptr) {
+            return;
+        }
+        while (temp->next != head) {
             cout << number << ". ";
             temp->print();
             temp = temp->next;
             number++;
-            count--;
         }
     }
 
@@ -119,8 +120,9 @@ public:
     // Round Robin Scheduler algorithm
     void schedulerAlg(int time) {
         char YNinput;
-        char pName;
+        string pName;
         int pTime;
+
         printList();
         cout << "Add new process? (Enter Y/N) ";
         cin >> YNinput; cout << endl;
@@ -129,7 +131,11 @@ public:
             cin >> pName; cout << endl;
             cout << "Enter Total Process Time: ";
             cin >> pTime; cout << endl;
-            insertProcess();
+            Process *newP = new Process(pName, pTime);
+            insertProcess(newP);
+            printList();
+        } else {
+            printList();
         }
     }
 };
@@ -143,7 +149,7 @@ int main() {
     // create and prepopulate list with rest of objects
     CircularDLL<Process> *list = new CircularDLL<Process>(p1);
     list->insertProcess(new Process("B", 12));
-    list->insertProcess(new Process("E", 8));
+    list->insertProcess(new Process("C", 8));
     list->insertProcess(new Process("D", 5));
     list->insertProcess(new Process("E", 10));
 
