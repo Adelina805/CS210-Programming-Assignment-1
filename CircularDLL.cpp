@@ -81,16 +81,16 @@ public:
 
     // Print the list
     void printList() {
-        char input;
+        int number = 1;
         Node<T> *temp = head;
         int count = 5;
         while (count != 0) { //(temp != nullptr)
+            cout << number << ". ";
             temp->print();
             temp = temp->next;
+            number++;
             count--;
         }
-        cout << "Add new process? (Enter Y/N) ";
-        cin >> input;
     }
 
     // Insert a process at the end
@@ -115,6 +115,23 @@ public:
         delete temp;
         length--;
     }
+
+    // Round Robin Scheduler algorithm
+    void schedulerAlg(int time) {
+        char YNinput;
+        char pName;
+        int pTime;
+        printList();
+        cout << "Add new process? (Enter Y/N) ";
+        cin >> YNinput; cout << endl;
+        if (YNinput == 'Y') {
+            cout << "Enter New Process Name: ";
+            cin >> pName; cout << endl;
+            cout << "Enter Total Process Time: ";
+            cin >> pTime; cout << endl;
+            insertProcess();
+        }
+    }
 };
 
 // Main Class
@@ -133,10 +150,11 @@ int main() {
     // ask user for quantum time
     cout << "Enter Quantum Time: ";
     cin >> userNum;
-
-    // print the prepopulated list
     cout << "Prepopulating with processes" << endl;
-    list->printList();
+
+    //list->printList();
+    // run the scheduler algorithm
+    list->schedulerAlg(userNum);
 
     return 0;
 }
