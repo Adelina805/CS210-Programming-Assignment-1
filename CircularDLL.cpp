@@ -1,30 +1,6 @@
 #include <iostream>
 using namespace std;
 
-// Main Class
-int main() {
-    int userNum;
-    // create and prepopulate list
-    CircularDLL<int> list;
-    list.insertProcess(10);
-    list.insertProcess(12);
-    list.insertProcess(8);
-    list.insertProcess(5);
-    list.insertProcess(10);
-
-    // ask user for quantum time
-    cout << "Enter Quantum Time: ";
-    cin >> userNum;
-    // print the prepopulated list
-    cout << "Prepopulating with processes" << endl;
-    list.printList();
-    //cout << "Add new process? (Enter Y/N) " << endl;
-    // add new process function
-
-    return 0;
-}
-
-
 // Data Class: This is what goes inside your Node
 class Process {
 public:
@@ -94,39 +70,73 @@ public:
         Node<T> *temp = head;
         Node<T> *nextNode;
         while (head) {
-            head = head->next;
+            nextNode = head->next;
             delete temp;
-            temp = head;
+            temp = nextNode;
+            if (temp == head){
+                break;
+            }
         }
     }
 
     // Print the list
     void printList() {
+        char input;
         Node<T> *temp = head;
-        while (temp != nullptr) {
+        int count = 5;
+        while (count != 0) { //(temp != nullptr)
             temp->print();
             temp = temp->next;
+            count--;
         }
+        cout << "Add new process? (Enter Y/N) ";
+        cin >> input;
     }
 
-    //Insert a process at the end
+    // Insert a process at the end
     void insertProcess(T *data) {
-        Node<T>* newNode = new Node<T>(data);
-        if (length == 0) {
-            head = newNode;
-            tail = newNode;
-            tail->next = head;
-            head->prev = tail;
-        } else {
-            tail->next = newNode;
-            tail = newNode;
-            tail->next = head;
-        }
+        Node<T> *newNode = new Node<T>(data);
+        newNode->prev = tail;
+        tail->next = newNode;
+        tail = newNode;
+        tail->next = head;
+        head->prev = tail;
         length++;
     }
 
-    //Delete a Process
+    // Delete a Process at the end
     void deleteProcess() {
-//write code to delete process here
+        if (length == 0)
+            return;
+        Node<T> *temp = tail;
+        tail = tail->prev;
+        tail->next = head;
+        head->prev = tail;
+        delete temp;
+        length--;
     }
 };
+
+// Main Class
+int main() {
+    int userNum;
+    // create first data object
+    Process *p1 = new Process("A", 10);
+
+    // create and prepopulate list with rest of objects
+    CircularDLL<Process> *list = new CircularDLL<Process>(p1);
+    list->insertProcess(new Process("B", 12));
+    list->insertProcess(new Process("E", 8));
+    list->insertProcess(new Process("D", 5));
+    list->insertProcess(new Process("E", 10));
+
+    // ask user for quantum time
+    cout << "Enter Quantum Time: ";
+    cin >> userNum;
+
+    // print the prepopulated list
+    cout << "Prepopulating with processes" << endl;
+    list->printList();
+
+    return 0;
+}
