@@ -1,15 +1,26 @@
 #include <iostream>
-
 using namespace std;
 
 // Main Class
 int main() {
-    cout << "Enter Quantum Time: " << endl;
-    // accept input
-    //cout << "Prepopulating with processes" << endl;
-    // run Process
+    int userNum;
+    // create and prepopulate list
+    CircularDLL<int> list;
+    list.insertProcess(10);
+    list.insertProcess(12);
+    list.insertProcess(8);
+    list.insertProcess(5);
+    list.insertProcess(10);
+
+    // ask user for quantum time
+    cout << "Enter Quantum Time: ";
+    cin >> userNum;
+    // print the prepopulated list
+    cout << "Prepopulating with processes" << endl;
+    list.printList();
     //cout << "Add new process? (Enter Y/N) " << endl;
     // add new process function
+
     return 0;
 }
 
@@ -20,16 +31,20 @@ public:
     string processName;
     int totalTime;
 
+    // Constructor
     Process(string processName, int totalTime) {
-//Fill constructor here
+        this->processName = processName;
+        this->totalTime = totalTime;
     }
 
+    // update totalTime after each quantum cycle
     void updateRunTime() {
 //write method to update totalTime after each quantum cycle.
     }
 
+    // print name of process and the time left
     void print() {
-//write print method to print the name of the process and the time left
+        cout << "Process " << processName << " " << totalTime << "seconds" << endl;
     }
 };
 
@@ -41,12 +56,14 @@ public:
     Node<T> *next;
     Node<T> *prev;
 
+    // Constructor
     Node(T *data) {
         this->data = data;
         next = nullptr;
         prev = nullptr;
     }
 
+    // Print
     void print() {
         data->print();
     }
@@ -57,28 +74,58 @@ public:
 template<typename T>class CircularDLL {
 private:
     Node<T> *curr;
+    Node<T> *head;
+    Node<T> * tail;
     int length;
+
 public:
-// Constructor
+    // Constructor
     CircularDLL(T *data) {
-//Write constructor for the DLL here
+        Node<T> *newNode = new Node<T>(data);
+        head = newNode;
+        tail = newNode;
+        tail->next = head;
+        head->prev = tail;
+        length = 1;
     }
 
-//Destructor
+    // Destructor
     ~CircularDLL() {
-//Write code for destructor here
+        Node<T> *temp = head;
+        Node<T> *nextNode;
+        while (head) {
+            head = head->next;
+            delete temp;
+            temp = head;
+        }
     }
 
+    // Print the list
     void printList() {
-//Write code to print the list here.
+        Node<T> *temp = head;
+        while (temp != nullptr) {
+            temp->print();
+            temp = temp->next;
+        }
     }
 
-//Insert a process
+    //Insert a process at the end
     void insertProcess(T *data) {
-//write code to insert process here
+        Node<T>* newNode = new Node<T>(data);
+        if (length == 0) {
+            head = newNode;
+            tail = newNode;
+            tail->next = head;
+            head->prev = tail;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+            tail->next = head;
+        }
+        length++;
     }
 
-//Delete a Process
+    //Delete a Process
     void deleteProcess() {
 //write code to delete process here
     }
