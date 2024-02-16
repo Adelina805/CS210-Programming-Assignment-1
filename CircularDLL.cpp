@@ -9,18 +9,20 @@ public:
     int totalTime;
 
     // Constructor
-    Process(string processName, int totalTime) {
+    Process(const string &processName, int totalTime) {
         this->processName = processName;
         this->totalTime = totalTime;
     }
 
     // update totalTime after each quantum cycle
-    void updateRunTime(int multiplier) {
-
+    void updateRunTime() {
+        // traverse the list and subtract quantum time from totalTime
+        
+        // if totalTime = 0, delete the process
     }
 
     // print name of process and the time left
-    void print() {
+    void print() const {
         cout << "Process " << processName << " " << totalTime << "seconds" << endl;
     }
 };
@@ -124,6 +126,7 @@ public:
 int main() {
     char YNinput; // Yes or No input
     int quanTime; // input quantum time
+    int currTime; // total time passed
     string pName; // new process name
     int pTime; // new process time
     int cycleNum = 1; // cycle counter
@@ -141,6 +144,7 @@ int main() {
     // ask user for quantum time
     cout << "Enter Quantum Time: ";
     cin >> quanTime;
+    currTime = quanTime;
     cout << "Prepopulating with processes" << endl;
 
     // print initial list
@@ -152,14 +156,15 @@ int main() {
         cout << "Add new process? (Enter Y/N) ";
         cin >> YNinput;
 
-        // if no, run the cycles
+        // if no, run the cycle, incrementing the time and cycle number each time
         if (YNinput != 'Y') {
             cout << "Running Cycle " << cycleNum << endl;
-            // call the update function
-            cout << "After cycle " << cycleNum << " – " << quanTime
+            p1->updateRunTime(); // update the times in the process list
+            cout << "After cycle " << cycleNum << " – " << currTime
                  << " second elapses – state of processes is as follows:" << endl;
-            list->printList();
-            cycleNum++;
+            list->printList(); // print the updated list
+            currTime = currTime + quanTime; // update time
+            cycleNum++; // update cycle number
             continue;
         }
 
