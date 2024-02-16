@@ -15,7 +15,7 @@ public:
     }
 
     // update totalTime after each quantum cycle
-    void updateRunTime(int time) {
+    void updateRunTime(int multiplier) {
 
     }
 
@@ -52,7 +52,6 @@ public:
 template<typename T>
 class CircularDLL {
 private:
-    Node<T> *curr;
     Node<T> *head;
     Node<T> *tail;
     int length;
@@ -121,12 +120,13 @@ public:
     }
 };
 
-// Main Class
+// Main
 int main() {
-    int userNum;
-    char YNinput;
-    string pName;
-    int pTime;
+    char YNinput; // Yes or No input
+    int quanTime; // input quantum time
+    string pName; // new process name
+    int pTime; // new process time
+    int cycleNum = 1; // cycle counter
 
     // create first data object
     Process *p1 = new Process("A", 10);
@@ -140,23 +140,30 @@ int main() {
 
     // ask user for quantum time
     cout << "Enter Quantum Time: ";
-    cin >> userNum;
+    cin >> quanTime;
     cout << "Prepopulating with processes" << endl;
 
     // print initial list
     list->printList();
 
-    // ask user if they want to add a process
+    // input + output loop, breaks when processs finishes
     for (;;) {
+        // ask user if they want to add a process
         cout << "Add new process? (Enter Y/N) ";
         cin >> YNinput;
+
+        // if no, run the cycles
         if (YNinput != 'Y') {
-            cout << "Running Cycle 1 " << endl;
+            cout << "Running Cycle " << cycleNum << endl;
             // call the update function
-            cout << "After cycle 1 – 5 second elapses – state of processes is as follows:" << endl;
+            cout << "After cycle " << cycleNum << " – " << quanTime
+                 << " second elapses – state of processes is as follows:" << endl;
             list->printList();
-            break;
+            cycleNum++;
+            continue;
         }
+
+        // if yes, ask for name and time, add the process, and continue
         if (YNinput == 'Y') {
             cout << "Enter New Process Name: ";
             cin >> pName;
@@ -168,6 +175,4 @@ int main() {
             continue;
         }
     }
-
-    return 0;
 }
