@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -136,8 +137,9 @@ public:
 
 // Main
 int main() {
-    char YNinput; // Yes or No input
-    int quanTime; // input quantum time
+    string YNinput; // Yes or No input
+    string input; // number user input
+    int quanTime; // quantum time
     int currTime; // total time passed
     string pName; // new process name
     int pTime; // new process time
@@ -153,45 +155,82 @@ int main() {
     list->insertProcess(new Process("D", 5));
     list->insertProcess(new Process("E", 10));
 
-    // ask user for quantum time
-    cout << "Enter Quantum Time: ";
-    cin >> quanTime;
-    currTime = quanTime;
-    cout << "Prepopulating with processes" << endl;
+    // ask user for quantum time, print initial list
+    while (true) {
+        cout << "Enter Quantum Time: ";
+        getline(cin, input);
 
-    // print initial list
-    list->printList();
+        // error handle: use stringstream to convert the input to a number
+        istringstream iss(input);
+        if (!(iss >> quanTime)) {
+            cout << "Invalid input. Please enter a number." << endl;
+        } else {
+            currTime = quanTime; // set starting time to quanTime
+            cout << "Prepopulating with processes" << endl;
+            list->printList(); // print initial list
+            break;
+        }
+    }
 
-    // input + output loop, breaks when processs finishes
+    // input + output loop, breaks when process finishes
     for (;;) {
         // ask user if they want to add a process
         cout << "Add new process? (Enter Y/N) ";
         cin >> YNinput;
 
         // if no, run the cycle, incrementing the time and cycle number each time
-        if (YNinput != 'Y') {
+        if (YNinput == "N") {
             cout << "Running Cycle " << cycleNum << endl;
             p1->updateRunTime(quanTime); // update the times in the process list
             // if totalTime = 0 delete the process
-            list->deleteProcess(4); // test delete
+            //list->deleteProcess(0); // test delete head
+            //list->deleteProcess(1); // test delete
+            //list->deleteProcess(3); // test delete
             cout << "After cycle " << cycleNum << " – " << currTime
                  << " second elapses – state of processes is as follows:" << endl;
             list->printList(); // print the updated list
             currTime = currTime + quanTime; // update time
             cycleNum++; // update cycle number
+            //if () { // check if list is empty
+            // break }
+            // else {
             continue;
         }
 
-        // if yes, ask for name and time, add the process, and continue
-        if (YNinput == 'Y') {
+        // if YES: ask for name and time
+        if (YNinput == "Y") {
+
             cout << "Enter New Process Name: ";
-            cin >> pName;
-            cout << "Enter Total Process Time: ";
-            cin >> pTime;
+            cin >> pName; // new process name
+            cin.ignore(); // Clear the new line
+
+            while (true) {
+                cout << "Enter Total Process Time: ";
+                //cin >> pTime;
+                getline(cin, input);
+
+                // error handle: use stringstream to convert the input to a number
+                istringstream iss(input);
+                if (!(iss >> pTime)) {
+                    cout << "Invalid input. Please enter a number." << endl;
+                } else {
+                    break;
+                }
+            }
+
+            // add the process and continue
             Process *newP = new Process(pName, pTime);
             list->insertProcess(newP);
             cout << "Process Added." << endl;
             continue;
         }
+
+        // error handle: if input is not Y or N
+        if (YNinput != "Y" && YNinput != "N") {
+            cout << "Invalid input. Please enter Y or N: ";
+            continue;
+        }
     }
+    cout << "All processes are completed.";
+    return 0;
 }
