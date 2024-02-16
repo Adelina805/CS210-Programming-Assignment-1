@@ -14,8 +14,26 @@ public:
     }
 
     // update totalTime after each quantum cycle
-    void updateRunTime() {
-//write method to update totalTime after each quantum cycle.
+    void updateRunTime(int time) {
+        // Round Robin Scheduler algorithm
+            char YNinput;
+            string pName;
+            int pTime;
+
+            printList();
+            cout << "Add new process? (Enter Y/N) ";
+            cin >> YNinput; cout << endl;
+            if (YNinput == 'Y') {
+                cout << "Enter New Process Name: ";
+                cin >> pName; cout << endl;
+                cout << "Enter Total Process Time: ";
+                cin >> pTime; cout << endl;
+                Process *newP = new Process(pName, pTime);
+                insertProcess(newP);
+                printList();
+            } else {
+                printList();
+            }
     }
 
     // print name of process and the time left
@@ -115,28 +133,6 @@ public:
         head->prev = tail;
         delete temp;
         length--;
-    }
-
-    // Round Robin Scheduler algorithm
-    void schedulerAlg(int time) {
-        char YNinput;
-        string pName;
-        int pTime;
-
-        printList();
-        cout << "Add new process? (Enter Y/N) ";
-        cin >> YNinput; cout << endl;
-        if (YNinput == 'Y') {
-            cout << "Enter New Process Name: ";
-            cin >> pName; cout << endl;
-            cout << "Enter Total Process Time: ";
-            cin >> pTime; cout << endl;
-            Process *newP = new Process(pName, pTime);
-            insertProcess(newP);
-            printList();
-        } else {
-            printList();
-        }
     }
 };
 
