@@ -82,16 +82,16 @@ public:
     // Print the list
     void printList() {
         int number = 1;
-        Node<T> *temp = head;
-        if (head == nullptr) {
-            return;
+        if (!head) {
+            return; // check if list empty
         }
-        while (temp->next != head) {
+        Node<T>* temp = head;
+        do {
             cout << number << ". ";
             temp->print();
             temp = temp->next;
             number++;
-        }
+        } while (temp != head);
     }
 
     // Insert a process at the end
