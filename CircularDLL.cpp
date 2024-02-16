@@ -144,10 +144,10 @@ int main() {
     int pTime; // new process time
     int cycleNum = 1; // cycle counter
 
-    // create first data object
+    // create list object with first process
     Process *p1 = new Process("A", 10);
 
-    // create and prepopulate list with rest of objects
+    // create and prepopulate list with rest of processes
     CircularDLL<Process> *list = new CircularDLL<Process>(p1);
     list->insertProcess(new Process("B", 12));
     list->insertProcess(new Process("C", 8));
@@ -181,9 +181,9 @@ int main() {
         if (YNinput == "N") {
             cout << "Running Cycle " << cycleNum << endl;
 
-            // update the times in the process list
+            // traverse the list and update each time in the process list
             p1->updateRunTime(quanTime);
-            
+
             //list->deleteProcess(0); // test delete head
             //list->deleteProcess(1); // test delete
             //list->deleteProcess(3); // test delete
