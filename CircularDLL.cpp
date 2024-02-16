@@ -1,4 +1,5 @@
 #include <iostream>
+
 using namespace std;
 
 // Data Class: This is what goes inside your Node
@@ -26,7 +27,8 @@ public:
 
 
 // Node Class: Node for the DoublyLinkedList
-template<typename T>class Node {
+template<typename T>
+class Node {
 public:
     T *data;
     Node<T> *next;
@@ -47,11 +49,12 @@ public:
 
 
 // CircularDoublyLinkedList Class: Container for Nodes
-template<typename T>class CircularDLL {
+template<typename T>
+class CircularDLL {
 private:
     Node<T> *curr;
     Node<T> *head;
-    Node<T> * tail;
+    Node<T> *tail;
     int length;
 
 public:
@@ -73,7 +76,7 @@ public:
             nextNode = head->next;
             delete temp;
             temp = nextNode;
-            if (temp == head){
+            if (temp == head) {
                 break;
             }
         }
@@ -83,9 +86,9 @@ public:
     void printList() {
         int number = 1;
         if (!head) {
-            return; // check if list empty
+            return;
         }
-        Node<T>* temp = head;
+        Node<T> *temp = head;
         do {
             cout << number << ". ";
             temp->print();
@@ -121,6 +124,10 @@ public:
 // Main Class
 int main() {
     int userNum;
+    char YNinput;
+    string pName;
+    int pTime;
+
     // create first data object
     Process *p1 = new Process("A", 10);
 
@@ -136,26 +143,30 @@ int main() {
     cin >> userNum;
     cout << "Prepopulating with processes" << endl;
 
-    //list->printList();
-    // run the scheduler algorithm
-    // Round Robin Scheduler algorithm
-    char YNinput;
-    string pName;
-    int pTime;
-
+    // print initial list
     list->printList();
-    cout << "Add new process? (Enter Y/N) ";
-    cin >> YNinput; cout << endl;
-    if (YNinput == 'Y') {
-        cout << "Enter New Process Name: ";
-        cin >> pName; cout << endl;
-        cout << "Enter Total Process Time: ";
-        cin >> pTime; cout << endl;
-        Process *newP = new Process(pName, pTime);
-        list->insertProcess(newP);
-        list->printList();
-    } else {
-        list->printList();
+
+    // ask user if they want to add a process
+    for (;;) {
+        cout << "Add new process? (Enter Y/N) ";
+        cin >> YNinput;
+        if (YNinput != 'Y') {
+            cout << "Running Cycle 1 " << endl;
+            // call the update function
+            cout << "After cycle 1 – 5 second elapses – state of processes is as follows:" << endl;
+            list->printList();
+            break;
+        }
+        if (YNinput == 'Y') {
+            cout << "Enter New Process Name: ";
+            cin >> pName;
+            cout << "Enter Total Process Time: ";
+            cin >> pTime;
+            Process *newP = new Process(pName, pTime);
+            list->insertProcess(newP);
+            cout << "Process Added." << endl;
+            continue;
+        }
     }
 
     return 0;
