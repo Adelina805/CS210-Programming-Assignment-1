@@ -15,10 +15,9 @@ public:
     }
 
     // update totalTime after each quantum cycle
-    void updateRunTime() {
+    void updateRunTime(int quan) {
         // traverse the list and subtract quantum time from totalTime
-        
-        // if totalTime = 0, delete the process
+        this->totalTime = this->totalTime - quan;
     }
 
     // print name of process and the time left
@@ -83,6 +82,17 @@ public:
         }
     }
 
+    // get index
+    Node<T> *get(int index) {
+        if (index < 0 || index >= length)
+            return nullptr;
+        Node<T> *temp = head;
+        for (int i = 0; i < index; ++i) {
+            temp = temp->next;
+        }
+        return temp;
+    }
+
     // Print the list
     void printList() {
         int number = 1;
@@ -109,14 +119,16 @@ public:
         length++;
     }
 
-    // Delete a Process at the end
-    void deleteProcess() {
-        if (length == 0)
+    // Delete at index
+    void deleteProcess(int index) {
+        if (index < 0 || index >= length) {
             return;
-        Node<T> *temp = tail;
-        tail = tail->prev;
-        tail->next = head;
-        head->prev = tail;
+        }
+
+        Node<T> *prev = get(index - 1);
+        Node<T> *temp = prev->next;
+
+        prev->next = temp->next;
         delete temp;
         length--;
     }
@@ -159,7 +171,9 @@ int main() {
         // if no, run the cycle, incrementing the time and cycle number each time
         if (YNinput != 'Y') {
             cout << "Running Cycle " << cycleNum << endl;
-            p1->updateRunTime(); // update the times in the process list
+            p1->updateRunTime(quanTime); // update the times in the process list
+            // if totalTime = 0 delete the process
+            list->deleteProcess(4); // test delete
             cout << "After cycle " << cycleNum << " – " << currTime
                  << " second elapses – state of processes is as follows:" << endl;
             list->printList(); // print the updated list
