@@ -3,29 +3,6 @@
 
 using namespace std;
 
-// Data Class: This is what goes inside your Node
-class Process {
-public:
-    string processName;
-    int totalTime;
-
-    // Constructor
-    Process(const string &processName, int totalTime) {
-        this->processName = processName;
-        this->totalTime = totalTime;
-    }
-
-    // update totalTime of the process
-    void updateRunTime(int quan) {
-        this->totalTime = this->totalTime - quan;
-    }
-
-    // print name of process and the time left
-    void print() const {
-        cout << "Process " << processName << " " << totalTime << "seconds" << endl;
-    }
-};
-
 
 // Node Class: Node for the DoublyLinkedList
 template<typename T>
@@ -52,12 +29,11 @@ public:
 // CircularDoublyLinkedList Class: Container for Nodes
 template<typename T>
 class CircularDLL {
-private:
+public:
     Node<T> *head;
     Node<T> *tail;
     int length;
 
-public:
     // Constructor
     CircularDLL(T *data) {
         Node<T> *newNode = new Node<T>(data);
@@ -134,6 +110,37 @@ public:
     }
 };
 
+
+// Process Data Class: This is what goes inside your Node
+class Process {
+public:
+    string processName;
+    int totalTime;
+
+    // Constructor
+    Process(const string &processName, int totalTime) {
+        this->processName = processName;
+        this->totalTime = totalTime;
+    }
+
+    // update totalTime of the process
+    void updateRunTime(CircularDLL<Process> &list, int quan) {
+        if (!list.head) {
+            return;
+        }
+        Node<Process> *temp = list.head;
+        do {
+            temp->data->totalTime -= quan; // subtract quan from totalTime
+            temp = temp->next; // go to next node
+        } while (temp != list.head);
+    }
+
+    // print name of process and the time left
+    void print() const {
+        cout << "Process " << processName << " " << totalTime << "seconds" << endl;
+    }
+};
+
 // Main
 int main() {
     string YNinput; // Yes or No input
@@ -144,7 +151,7 @@ int main() {
     int pTime; // new process time
     int cycleNum = 1; // cycle counter
 
-    // create list object with first process
+    // create first process object
     Process *p1 = new Process("A", 10);
 
     // create and prepopulate list with rest of processes
@@ -182,7 +189,7 @@ int main() {
             cout << "Running Cycle " << cycleNum << endl;
 
             // traverse the list and update each time in the process list
-            p1->updateRunTime(quanTime);
+            p1->updateRunTime(*list, quanTime);
 
             //list->deleteProcess(0); // test delete head
             //list->deleteProcess(1); // test delete
@@ -212,7 +219,6 @@ int main() {
 
             while (true) {
                 cout << "Enter Total Process Time: ";
-                //cin >> pTime;
                 getline(cin, input);
 
                 // error handle: use stringstream to convert the input to a number
