@@ -123,16 +123,16 @@ public:
         this->totalTime = totalTime;
     }
 
-    // update totalTime of the process
+    // traverse and update the totalTime of each process node in the list
     void updateRunTime(CircularDLL<Process> &list, int quan) {
         if (!list.head) {
-            return;
+            return; // if empty do nothing
         }
-        Node<Process> *temp = list.head;
+        Node<Process> *temp = list.head; // temporary node starting at head
         do {
             temp->data->totalTime -= quan; // subtract quan from totalTime
             temp = temp->next; // go to next node
-        } while (temp != list.head);
+        } while (temp != list.head); // keep going until it loops back to head
     }
 
     // print name of process and the time left
@@ -196,7 +196,7 @@ int main() {
             //list->deleteProcess(3); // test delete
             // if totalTime = 0 delete the process
 
-            // cycle complete and list updated, print results
+            // cycle completed and list updated, print the results
             cout << "After cycle " << cycleNum << " – " << currTime
                  << " second elapses – state of processes is as follows:" << endl;
             list->printList(); // print the updated list
@@ -205,8 +205,9 @@ int main() {
 
             //if () { // check if list is empty
             // break }
+            //cout << "All processes are completed.";
+            //return 0;
             // else {
-
             continue;
         }
 
@@ -237,12 +238,10 @@ int main() {
             continue;
         }
 
-        // error handle: if input is not Y or N
+        // error handle: input is NOT Y or N
         if (YNinput != "Y" && YNinput != "N") {
             cout << "Invalid input. Please enter Y or N: ";
             continue;
         }
     }
-    cout << "All processes are completed.";
-    return 0;
 }
