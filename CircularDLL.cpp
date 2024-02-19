@@ -58,15 +58,30 @@ public:
         }
     }
 
-    // get index
+    // Get the index
     Node<T> *get(int index) {
-        if (index < 0 || index >= length)
+        // if invalid index return nullptr
+        if (index < 0 || index >= length) {
             return nullptr;
-        Node<T> *temp = head;
-        for (int i = 0; i < index; ++i) {
-            temp = temp->next;
         }
-        return temp;
+
+        // if index is 0, return head
+        if (index == 0) {
+            return head;
+        }
+
+        // if index is the last element, return tail
+        if (index == length - 1) {
+            return tail;
+        }
+
+        // traverse the list to find the node at the given index
+        Node<T> *current = head->next;
+        for (int i = 1; i < index; i++) {
+            current = current->next;
+        }
+
+        return current;
     }
 
     // Print the list
@@ -88,11 +103,11 @@ public:
     void insertProcess(T *data) {
         Node<T> *newNode = new Node<T>(data);
         newNode->prev = tail;
-        tail->next = newNode;
-        tail = newNode;
-        tail->next = head;
-        head->prev = tail;
-        length++;
+        newNode->next = head; // set newNodes next to head
+        tail->next = newNode; // make the tails next to newNode
+        head->prev = newNode; // make the heads prev to newNode
+        tail = newNode; // make tail equal newNode
+        length++; // increment length
     }
 
     // Delete process at given index
@@ -105,11 +120,15 @@ public:
         // delete head
         if (index == 0) {
             Node<T> *temp = head;
-            head = head->next;
-            head->prev = tail;
-            tail->next = head;
+            if (length == 1) {
+                head = tail = nullptr;
+            } else {
+                head = head->next;
+                head->prev = tail;
+                tail->next = head;
+            }
             delete temp;
-            length--;
+            length--; // decrement length
             return;
         }
 
@@ -118,8 +137,16 @@ public:
 
         prev->next = temp->next;
         temp->next->prev = prev;
+        if (temp == tail) {
+            tail = prev;
+        }
         delete temp;
-        length--;
+        length--; // decrement length
+    }
+
+    // Check if the list is empty
+    bool isEmpty() {
+        return length == 0;
     }
 };
 
@@ -138,25 +165,25 @@ public:
 
     // traverse and update the totalTime of each process node in the list
     void updateRunTime(CircularDLL<Process> &list, int quan) {
-        if (!list.head) {
-            return; // if empty do nothing
-        }
-
         Node<Process> *temp = list.head; // temporary node starting at head
         int index = 0; // index tracker
 
-        do {
+        while (temp != nullptr) {
             temp->data->totalTime -= quan; // subtract quan from totalTime
             Node<Process> *nextTemp = temp->next; // store next node before potential deletion
 
-            if (temp->data->totalTime <= 0) {
-                list.deleteProcess(index); // if total time is less than or equal to zero, delete
+            if (temp->data->totalTime <= 0) { // if total time is less than or equal to zero
+                list.deleteProcess(index); // delete at index
+                temp = nextTemp; // move to the next node after deletion
             } else {
                 index++; // increment index if not deleted
+                temp = temp->next; // go to the next node
             }
 
-            temp = nextTemp; // go to next node
-        } while (temp != list.head); // keep going until it loops back to head
+            if (temp == list.head) { // loop back to head, break the loop
+                break;
+            }
+        }
     }
 
     // print name of process and the time left
@@ -207,6 +234,7 @@ int main() {
         // ask user if they want to add a process
         cout << "Add new process? (Enter Y/N) ";
         cin >> YNinput;
+        cin.ignore(); // clear the new line
 
         // if no, run the cycle, incrementing the time and cycle number each time
         if (YNinput == "N") {
@@ -215,40 +243,34 @@ int main() {
             // traverse the list and update each time in the process list
             p1->updateRunTime(*list, quanTime);
 
-//            list->deleteProcess(0); // test delete head
-//            list->deleteProcess(1); // test delete
-//            list->deleteProcess(-1); // test delete
-//            list->deleteProcess(20); // test delete
-//            list->deleteProcess(4); // test delete
-            // if totalTime = 0 delete the process
-
             // cycle completed and list updated, print the results
             cout << "After cycle " << cycleNum << " – " << currTime
                  << " second elapses – state of processes is as follows:" << endl;
+
+            // check if the list is empty, if so cycle finished
+            if (list->isEmpty()) {
+                cout << "All processes are completed." << endl;
+                return 0; // completely done
+            }
+
             list->printList(); // print the updated list
             currTime = currTime + quanTime; // update total time passed
             cycleNum++; // update cycle number
-
-            //if () { // check if list is empty
-            // break }
-            //cout << "All processes are completed.";
-            //return 0;
-            // else {
             continue;
         }
 
         // if YES: ask for name and time
         if (YNinput == "Y") {
-
             cout << "Enter New Process Name: ";
             cin >> pName; // new process name
-            cin.ignore(); // Clear the new line
+            cin.ignore(); // clear the new line
 
+            // error handle: only accept number for time
             while (true) {
                 cout << "Enter Total Process Time: ";
-                getline(cin, input);
+                getline(cin, input); // new time
 
-                // error handle: use stringstream to convert the input to a number
+                // use stringstream to convert the input to a number
                 istringstream iss(input);
                 if (!(iss >> pTime)) {
                     cout << "Invalid input. Please enter a number." << endl;
@@ -258,9 +280,9 @@ int main() {
             }
 
             // add the process and continue
-            Process *newP = new Process(pName, pTime);
-            list->insertProcess(newP);
-            cout << "Process Added." << endl;
+            Process *newP = new Process(pName, pTime); // create new process
+            list->insertProcess(newP); // add new process
+            cout << "Process Added." << endl; // confirmation
             continue;
         }
 
