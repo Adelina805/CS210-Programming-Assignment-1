@@ -166,21 +166,12 @@ public:
     // traverse and update the totalTime of each process node in the list
     void updateRunTime(CircularDLL<Process> &list, int quan) {
         Node<Process> *temp = list.head; // temporary node starting at head
-        int index = 0; // index tracker
 
         while (temp != nullptr) {
             temp->data->totalTime -= quan; // subtract quan from totalTime
-            Node<Process> *nextTemp = temp->next; // store next node before potential deletion
+            temp = temp->next; // go to the next node
 
-            if (temp->data->totalTime <= 0) { // if total time is less than or equal to zero
-                list.deleteProcess(index); // delete at index
-                temp = nextTemp; // move to the next node after deletion
-            } else {
-                index++; // increment index if not deleted
-                temp = temp->next; // go to the next node
-            }
-
-            if (temp == list.head) { // loop back to head, break the loop
+            if (temp == list.head) { // if back to head, break the loop
                 break;
             }
         }
