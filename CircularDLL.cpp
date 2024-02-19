@@ -97,7 +97,19 @@ public:
 
     // Delete at index
     void deleteProcess(int index) {
+        // if invalid index return
         if (index < 0 || index >= length) {
+            return;
+        }
+
+        // delete head
+        if (index == 0) {
+            Node<T> *temp = head;
+            head = head->next;
+            head->prev = tail;
+            tail->next = head;
+            delete temp;
+            length--;
             return;
         }
 
@@ -105,6 +117,7 @@ public:
         Node<T> *temp = prev->next;
 
         prev->next = temp->next;
+        temp->next->prev = prev;
         delete temp;
         length--;
     }
@@ -191,9 +204,11 @@ int main() {
             // traverse the list and update each time in the process list
             p1->updateRunTime(*list, quanTime);
 
-            //list->deleteProcess(0); // test delete head
-            //list->deleteProcess(1); // test delete
-            //list->deleteProcess(3); // test delete
+//            list->deleteProcess(0); // test delete head
+//            list->deleteProcess(1); // test delete
+//            list->deleteProcess(-1); // test delete
+//            list->deleteProcess(20); // test delete
+//            list->deleteProcess(4); // test delete
             // if totalTime = 0 delete the process
 
             // cycle completed and list updated, print the results
