@@ -95,7 +95,7 @@ public:
         length++;
     }
 
-    // Delete at index
+    // Delete process at given index
     void deleteProcess(int index) {
         // if invalid index return
         if (index < 0 || index >= length) {
@@ -141,10 +141,21 @@ public:
         if (!list.head) {
             return; // if empty do nothing
         }
+
         Node<Process> *temp = list.head; // temporary node starting at head
+        int index = 0; // index tracker
+
         do {
             temp->data->totalTime -= quan; // subtract quan from totalTime
-            temp = temp->next; // go to next node
+            Node<Process> *nextTemp = temp->next; // store next node before potential deletion
+
+            if (temp->data->totalTime <= 0) {
+                list.deleteProcess(index); // if total time is less than or equal to zero, delete
+            } else {
+                index++; // increment index if not deleted
+            }
+
+            temp = nextTemp; // go to next node
         } while (temp != list.head); // keep going until it loops back to head
     }
 
