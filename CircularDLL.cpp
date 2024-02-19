@@ -111,36 +111,27 @@ public:
     }
 
     // Delete process at given index
-    void deleteProcess(int index) {
-        // if invalid index return
-        if (index < 0 || index >= length) {
+    void deleteProcess(Node<T> *node) {
+        // if processNode is nullptr or not in the list, return
+        if (!node || node->next == nullptr || node->prev == nullptr) {
             return;
         }
 
-        // delete head
-        if (index == 0) {
-            Node<T> *temp = head;
-            if (length == 1) {
-                head = tail = nullptr;
-            } else {
-                head = head->next;
-                head->prev = tail;
-                tail->next = head;
-            }
-            delete temp;
-            length--; // decrement length
-            return;
+        // if deleting the head
+        if (node == head) {
+            head = head->next;
         }
 
-        Node<T> *prev = get(index - 1);
-        Node<T> *temp = prev->next;
+        // update the next and prev pointers
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
 
-        prev->next = temp->next;
-        temp->next->prev = prev;
-        if (temp == tail) {
-            tail = prev;
+        // if deleting the tail, update tail
+        if (node == tail) {
+            tail = node->prev;
         }
-        delete temp;
+
+        delete node; // delete the node
         length--; // decrement length
     }
 
@@ -174,6 +165,30 @@ public:
             if (temp == list.head) { // if back to head, break the loop
                 break;
             }
+        }
+    }
+
+    // traverse and delete any processes with totalTime less than or equal to zero
+    void traverseAndDelete(CircularDLL<Process> &list) {
+        Node<Process> *current = list.head; // start at the head of the list
+        vector<Node<Process> *> nodesToDelete; // stores nodes to be deleted
+
+        while (current != nullptr) {
+            Node<Process> *temp = current; // save the current node
+            current = current->next; // go to the next node before potentially deleting
+
+            if (temp->data->totalTime <= 0) {
+                nodesToDelete.push_back(temp); // add node to be deleted to the temporary list
+            }
+
+            if (current == list.head) { // if back to the head, break the loop
+                break;
+            }
+        }
+
+        // delete nodes after traversal is complete
+        for (Node<Process> *node: nodesToDelete) {
+            list.deleteProcess(node);
         }
     }
 
@@ -233,6 +248,9 @@ int main() {
 
             // traverse the list and update each time in the process list
             p1->updateRunTime(*list, quanTime);
+
+            // traverse the list and delete any expired totalTimes
+            p1->traverseAndDelete(*list);
 
             // cycle completed and list updated, print the results
             cout << "After cycle " << cycleNum << " – " << currTime
