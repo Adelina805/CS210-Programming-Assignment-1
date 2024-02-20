@@ -9,20 +9,22 @@ Code description:
 
 Node : node container for the Circular Doubly Linked List
 PUBLIC MEMBER VARIABLES
-   T *data; - data for node
-   Node<T> *next; - next pointer for node
-   Node<T> *prev; - previous pointer for node
+   T *data; - Data for node
+   Node<T> *next; - pointer to the next node
+   Node<T> *prev; - pointer to the previous node
 CONSTRUCTORS
-   Node(T *data) - default constructor, creates node with some data, sets both pointers to null
+   Node(T *data) - default constructor, creates node with some data and sets both pointers to null
 PUBLIC MEMBER FUNCTIONS
-   void print()
-   print: calls the print function, no input or output
-   Precondition: State of Program before member function is run
-   Postcondition: State of Program after member function is run
+   void print() - calls the print function of the data stored in the node. no input or output
+      Precondition: data stored in the node is valid and can be printed
+      Postcondition: the print function is called and data is printed
 
-CircularDLL : Description of the role or purpose of objects of this class goes here.
+
+CircularDLL : container for nodes in a Circular Doubly Linked List
 PUBLIC MEMBER VARIABLES
-data_type Variable_Name; - Purpose of the variable
+   Node<T> *head; // head pointer
+   Node<T> *tail; // tail pointer
+   int length; - length, number of nodes in list
 CONSTRUCTORS
 Brief description of the purpose of this constructor; for example, default constructor, copy constructor
 Destructor if any. Describe the destructor

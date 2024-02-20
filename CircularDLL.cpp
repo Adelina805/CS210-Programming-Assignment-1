@@ -30,9 +30,9 @@ public:
 template<typename T>
 class CircularDLL {
 public:
-    Node<T> *head;
-    Node<T> *tail;
-    int length;
+    Node<T> *head; // head pointer
+    Node<T> *tail; // tail pointer
+    int length; // length
 
     // Constructor
     CircularDLL(T *data) {
