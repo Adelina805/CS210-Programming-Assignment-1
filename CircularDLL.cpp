@@ -8,9 +8,9 @@ using namespace std;
 template<typename T>
 class Node {
 public:
-    T *data; // data
-    Node<T> *next; // next pointer
-    Node<T> *prev; // previous pointer
+    T *data;
+    Node<T> *next;
+    Node<T> *prev;
 
     // Constructor
     Node(T *data) {
@@ -30,9 +30,9 @@ public:
 template<typename T>
 class CircularDLL {
 public:
-    Node<T> *head; // head pointer
-    Node<T> *tail; // tail pointer
-    int length; // length
+    Node<T> *head;
+    Node<T> *tail;
+    int length;
 
     // Constructor
     CircularDLL(T *data) {
@@ -186,8 +186,10 @@ int main() {
     // create first process object
     Process *p1 = new Process("A", 10);
 
-    // create and prepopulate list with rest of processes
+    // create list and add first process
     CircularDLL<Process> *list = new CircularDLL<Process>(p1);
+
+    // add the rest of the process objects
     list->insertProcess(new Process("B", 12));
     list->insertProcess(new Process("C", 8));
     list->insertProcess(new Process("D", 5));
