@@ -60,17 +60,17 @@ public:
 
     // Print the list
     void printList() {
-        int number = 1;
-        if (!head) {
+        int number = 1; // number
+        if (!head) { // if empty do nothing
             return;
         }
-        Node<T> *temp = head;
+        Node<T> *temp = head; // start temp at head
         do {
-            cout << number << ". ";
-            temp->print();
-            temp = temp->next;
-            number++;
-        } while (temp != head);
+            cout << number << ". "; // print number.
+            temp->print(); // call node's print
+            temp = temp->next; // go to next node
+            number++; // increment number
+        } while (temp != head); // stop if back to head
     }
 
     // Insert new process node at the end of list
@@ -250,11 +250,9 @@ int main() {
             // error handle: only accept number for time
             while (true) {
                 cout << "Enter Total Process Time: ";
-                getline(cin, input); // new time
-
-                // use stringstream to convert the input to a number
-                istringstream iss(input);
-                if (!(iss >> pTime)) {
+                getline(cin, input); // get the total time
+                istringstream iss(input); // use stringstream to convert the input to a number
+                if (!(iss >> pTime)) { // if no number at all, ask again
                     cout << "Invalid input. Please enter a number." << endl;
                 } else {
                     break;
@@ -263,8 +261,8 @@ int main() {
 
             // add the process and continue
             Process *newP = new Process(pName, pTime); // create new process
-            list->insertProcess(newP); // add new process
-            cout << "Process Added." << endl; // confirmation
+            list->insertProcess(newP); // add the new process
+            cout << "Process Added." << endl;
             continue;
         }
 
