@@ -8,9 +8,9 @@ using namespace std;
 template<typename T>
 class Node {
 public:
-    T *data;
-    Node<T> *next;
-    Node<T> *prev;
+    T *data; // data
+    Node<T> *next; // next pointer
+    Node<T> *prev; // previous pointer
 
     // Constructor
     Node(T *data) {
@@ -56,32 +56,6 @@ public:
                 break;
             }
         }
-    }
-
-    // Get the index
-    Node<T> *get(int index) {
-        // if invalid index return nullptr
-        if (index < 0 || index >= length) {
-            return nullptr;
-        }
-
-        // if index is 0, return head
-        if (index == 0) {
-            return head;
-        }
-
-        // if index is the last element, return tail
-        if (index == length - 1) {
-            return tail;
-        }
-
-        // traverse the list to find the node at the given index
-        Node<T> *current = head->next;
-        for (int i = 1; i < index; i++) {
-            current = current->next;
-        }
-
-        return current;
     }
 
     // Print the list
@@ -193,12 +167,13 @@ public:
     }
 
     // print name of process and the time left
-    void print() const {
+    void print() {
         cout << "Process " << processName << " " << totalTime << "seconds" << endl;
     }
 };
 
-// Main
+
+// Main program
 int main() {
     string YNinput; // Yes or No input
     string input; // number user input
@@ -235,7 +210,7 @@ int main() {
         }
     }
 
-    // input + output loop, breaks when process finishes
+    // infinite input + output loop, breaks when the process is finished
     for (;;) {
         // ask user if they want to add a process
         cout << "Add new process? (Enter Y/N) ";
