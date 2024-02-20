@@ -6,7 +6,8 @@ Author: Adelina Martinez
 Date of Completion: 2/23/2024
 Code description:
 
-# Node : node container for a Circular Doubly Linked List
+
+// Node : node container for a Circular Doubly Linked List
 
 PUBLIC MEMBER VARIABLES
    T *data; - Data for node
@@ -23,7 +24,7 @@ PUBLIC MEMBER FUNCTIONS
       Postcondition: the print function is called and data is printed
 
 
-# CircularDLL : container for the nodes in a Circular Doubly Linked List
+// CircularDLL : container for the nodes in a Circular Doubly Linked List
 
 PUBLIC MEMBER VARIABLES
    Node<T> *head; - pointer for the head node of the list
@@ -36,53 +37,58 @@ CONSTRUCTORS
 
 PUBLIC MEMBER FUNCTIONS
    void printList()
-   printList : prints the data of all nodes in the list
-      Precondition: None
-      Postcondition: None
+      printList : prints the data of all nodes in the list in the format "number." + the printed process
+      Precondition: data stored in the node is valid and can be printed
+      Postcondition: the number is printed and the print function is called to print the process
 
    void insertProcess(T *data)
-   insertProcess : inserts a new node with the given data at the end of the list
-      Precondition: None
-      Postcondition: List contains a new node with the given data at the end
+      insertProcess : inserts a new node with the given data at the end of the list
+      Precondition: data is valid, list exists and is circular doubly linked
+      Postcondition: the list contains a new node at the end with the given data
 
-   void deleteProcess(Node<T> *node) - Deletes the given node from the list
-   Precondition: Node is a valid node in the list
-   Postcondition: Node is removed from the list, memory is freed
+   void deleteProcess(Node<T> *node)
+      deleteProcess : deletes the given node from the list
+      Precondition: the node is a valid node in the list
+      Postcondition: the node is removed from the list and memory is freed
 
-   bool isEmpty() - Checks if the list is empty
-   Precondition: None
-   Postcondition: None
-
-return_type Function_Name (parameter_list)
-Function_Name: brief description of the purpose of this function, it's input, and its output. Also include a brief
-description of how the function works if the algorithm is non-trivial.
-Precondition: State of Program before member function is run
-Postcondition: State of Program after member function is run
+   bool isEmpty()
+      isEmpty : checks if the list is empty
+      Precondition: none
+      Postcondition: none
 
 
-Process : Description of the role or purpose of objects of this class goes here.
+// Process : the data that goes inside the node
+
 PUBLIC MEMBER VARIABLES
-data_type Variable_Name; - Purpose of the variable
+   string processName; - name of the process
+   int totalTime; - total time needed for the process to complete
+
 CONSTRUCTORS
-Brief description of the purpose of this constructor; for example, default constructor, copy constructor
-Destructor if any. Describe the destructor
+   Process(const string &processName, int totalTime) - creates a new process with the given name and total time
+
 PUBLIC MEMBER FUNCTIONS
-return_type Function_Name (parameter_list)
-Function_Name: brief description of the purpose of this function, it's input, and its output. Also include a brief
-description of how the function works if the algorithm is non-trivial.
-Precondition: State of Program before member function is run
-Postcondition: State of Program after member function is run
+   void updateRunTime(CircularDLL<Process> &list, int quan)
+      updateRunTime : updates the total time of each process in the list by subtracting quan
+      Precondition: list contains valid process nodes
+      Postcondition: total time of each process is updated
+
+   void traverseAndDelete(CircularDLL<Process> &list)
+      traverseAndDelete : deletes processes with total time less than or equal to zero from the list by storing in temp list
+      Precondition: list contains valid process nodes
+      Postcondition: processes with total time less than or equal to zero are deleted from the list
+
+   void print() - prints the process in the format "name of the process + the total time"
+      Precondition: data stored in the node is valid and can be printed
+      Postcondition: the process is printed
 
 
-Main : Description of the role or purpose of objects of this class goes here.
+// Main : the main program
+
 PUBLIC MEMBER VARIABLES
-data_type Variable_Name; - Purpose of the variable
-CONSTRUCTORS
-Brief description of the purpose of this constructor; for example, default constructor, copy constructor
-Destructor if any. Describe the destructor
-PUBLIC MEMBER FUNCTIONS
-return_type Function_Name (parameter_list)
-Function_Name: brief description of the purpose of this function, it's input, and its output. Also include a brief
-description of how the function works if the algorithm is non-trivial.
-Precondition: State of Program before member function is run
-Postcondition: State of Program after member function is run
+   string YNinput; - User input for adding new processes (Y/N)
+   string input; - User input for quantum time and process name
+   int quanTime; - Quantum time for the simulation
+   int currTime; - Total time passed in the simulation
+   string pName; - Name of a new process to be added
+   int pTime; - Total time for a new process to be added
+   int cycleNum; - Number of cycles completed in the simulation

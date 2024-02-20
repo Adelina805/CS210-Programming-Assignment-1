@@ -73,29 +73,27 @@ public:
         } while (temp != head);
     }
 
-    // Insert a process at the end
+    // Insert new process node at the end of list
     void insertProcess(T *data) {
-        Node<T> *newNode = new Node<T>(data);
-        newNode->prev = tail;
+        Node<T> *newNode = new Node<T>(data); // create new node
+        newNode->prev = tail; // set newNodes prev to tail
         newNode->next = head; // set newNodes next to head
-        tail->next = newNode; // make the tails next to newNode
-        head->prev = newNode; // make the heads prev to newNode
+        tail->next = newNode; // set the tails next to newNode
+        head->prev = newNode; // set the heads prev to newNode
         tail = newNode; // make tail equal newNode
         length++; // increment length
     }
 
-    // Delete process at given index
+    // Delete the process node at the given index
     void deleteProcess(Node<T> *node) {
         // if processNode is nullptr or not in the list, return
         if (!node || node->next == nullptr || node->prev == nullptr) {
             return;
         }
-
         // if deleting the head
         if (node == head) {
             head = head->next;
         }
-
         // update the next and prev pointers
         node->prev->next = node->next;
         node->next->prev = node->prev;
@@ -104,7 +102,6 @@ public:
         if (node == tail) {
             tail = node->prev;
         }
-
         delete node; // delete the node
         length--; // decrement length
     }
@@ -116,7 +113,7 @@ public:
 };
 
 
-// Process Data Class: This is what goes inside your Node
+// Process Class: the data that goes inside the node
 class Process {
 public:
     string processName;
@@ -128,7 +125,7 @@ public:
         this->totalTime = totalTime;
     }
 
-    // traverse and update the totalTime of each process node in the list
+    // Traverse and update the totalTime of each process node in the list
     void updateRunTime(CircularDLL<Process> &list, int quan) {
         Node<Process> *temp = list.head; // temporary node starting at head
 
@@ -142,25 +139,23 @@ public:
         }
     }
 
-    // traverse and delete any processes with totalTime less than or equal to zero
+    // Traverse and delete any processes with totalTime less than or equal to zero
     void traverseAndDelete(CircularDLL<Process> &list) {
         Node<Process> *current = list.head; // start at the head of the list
-        vector<Node<Process> *> nodesToDelete; // stores nodes to be deleted
+        vector<Node<Process> *> nodesToDelete; // temporary list that stores nodes to be deleted
 
         while (current != nullptr) {
             Node<Process> *temp = current; // save the current node
             current = current->next; // go to the next node before potentially deleting
 
             if (temp->data->totalTime <= 0) {
-                nodesToDelete.push_back(temp); // add node to be deleted to the temporary list
+                nodesToDelete.push_back(temp); // store node to be deleted in the temporary list
             }
-
             if (current == list.head) { // if back to the head, break the loop
                 break;
             }
         }
-
-        // delete nodes after traversal is complete
+        // delete the nodes stored after traversal is complete
         for (Node<Process> *node: nodesToDelete) {
             list.deleteProcess(node);
         }
@@ -183,10 +178,10 @@ int main() {
     int pTime; // new process time
     int cycleNum = 1; // cycle counter
 
-    // create first process object
+    // create the first process object
     Process *p1 = new Process("A", 10);
 
-    // create list and add first process
+    // create the list and add the first process
     CircularDLL<Process> *list = new CircularDLL<Process>(p1);
 
     // add the rest of the process objects
@@ -212,14 +207,14 @@ int main() {
         }
     }
 
-    // infinite input + output loop, breaks when the process is finished
+    // cycle loop: breaks when the process is finished
     for (;;) {
         // ask user if they want to add a process
         cout << "Add new process? (Enter Y/N) ";
-        cin >> YNinput;
+        cin >> YNinput; // yes or no answer
         cin.ignore(); // clear the new line
 
-        // if no, run the cycle, incrementing the time and cycle number each time
+        // if NO: run the cycle, incrementing the time and cycle number each time
         if (YNinput == "N") {
             cout << "Running Cycle " << cycleNum << endl;
 
@@ -229,14 +224,14 @@ int main() {
             // traverse the list and delete any expired totalTimes
             p1->traverseAndDelete(*list);
 
-            // cycle completed and list updated, print the results
+            // cycle is completed and list updated; print the results
             cout << "After cycle " << cycleNum << " – " << currTime
                  << " second elapses – state of processes is as follows:" << endl;
 
-            // check if the list is empty, if so cycle finished
+            // check if the list is empty, if so cycle is finished
             if (list->isEmpty()) {
                 cout << "All processes are completed." << endl;
-                return 0; // completely done
+                return 0; // completely done !
             }
 
             list->printList(); // print the updated list
@@ -245,8 +240,9 @@ int main() {
             continue;
         }
 
-        // if YES: ask for name and time
+        // if YES: add a new process
         if (YNinput == "Y") {
+            // ask user for name and time
             cout << "Enter New Process Name: ";
             cin >> pName; // new process name
             cin.ignore(); // clear the new line
