@@ -207,14 +207,14 @@ int main() {
         }
     }
 
-    // cycle loop: breaks when the process is finished
+    // cycle loop: breaks when all processes are finished
     while (true) {
         // ask user if they want to add a process
         cout << "Add new process? (Enter Y/N) ";
         cin >> YNinput; // yes or no answer
         cin.ignore(); // clear the new line
 
-        // if NO: run the cycle, incrementing the time and cycle number each time
+        // if NO: run the cycle
         if (YNinput == "N") {
             cout << "Running Cycle " << cycleNum << endl;
 
@@ -258,15 +258,14 @@ int main() {
                     break;
                 }
             }
-
-            // add the process and continue
+            // add the new process and continue
             Process *newP = new Process(pName, pTime); // create new process
             list->insertProcess(newP); // add the new process
             cout << "Process Added." << endl;
             continue;
         }
 
-        // error handle: input is NOT Y or N
+        // if NEITHER: error handle input is NOT Y or N
         if (YNinput != "Y" && YNinput != "N") {
             cout << "Invalid input. Please enter Y or N: ";
             continue;
