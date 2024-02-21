@@ -7,10 +7,10 @@ Date of Completion: 2/23/2024
 Code description:
 
 
-// Node : node container for a Circular Doubly Linked List
+// Node : template node container
 
 PUBLIC MEMBER VARIABLES
-   T *data; - Data for node
+   T *data; - data for node
    Node<T> *next; - pointer to the next node
    Node<T> *prev; - pointer to the previous node
 
@@ -19,12 +19,12 @@ CONSTRUCTORS
 
 PUBLIC MEMBER FUNCTIONS
    void print()
-      print : calls the print function of the data stored in the node. no input or output
+      print : calls the print function of the data stored in the node, no input or output
       Precondition: data stored in the node is valid and can be printed
       Postcondition: the print function is called and data is printed
 
 
-// CircularDLL : container for the nodes in a Circular Doubly Linked List
+// CircularDLL : template Circular Doubly Linked List container for the nodes
 
 PUBLIC MEMBER VARIABLES
    Node<T> *head; - pointer for the head node of the list
@@ -32,28 +32,28 @@ PUBLIC MEMBER VARIABLES
    int length; - length, number of nodes in list
 
 CONSTRUCTORS
-   CircularDLL(T *data) - default constructor, creates new list with one node with given data, tail's next points to head and head's previous points to tail, making it CDL
+   CircularDLL(T *data) - default constructor, creates a new list with one node with the given data, tail's next points to head and head's previous points to tail, making it CDL
    Destructor - default destructor, deletes all nodes in the list and frees memory
 
 PUBLIC MEMBER FUNCTIONS
    void printList()
-      printList : prints the data of all nodes in the list in the format "number." + the printed process
+      printList : prints the data of all nodes in the list in the format "number." + the printed process, no input or output
       Precondition: data stored in the node is valid and can be printed
-      Postcondition: the number is printed and the print function is called to print the process
+      Postcondition: calls Node's print and prints the process with the number in front
 
    void insertProcess(T *data)
-      insertProcess : inserts a new node with the given data at the end of the list
+      insertProcess : inserts a new node with the given data at the end of the list, input is the data
       Precondition: data is valid, list exists and is circular doubly linked
       Postcondition: the list contains a new node at the end with the given data
 
    void deleteProcess(Node<T> *node)
-      deleteProcess : deletes the given node from the list
+      deleteProcess : deletes the given node from the list, input is the node to be deleted
       Precondition: the node is a valid node in the list
       Postcondition: the node is removed from the list and memory is freed
 
    bool isEmpty()
-      isEmpty : checks if the list is empty
-      Precondition: none
+      isEmpty : checks if the list is empty, no input or output
+      Precondition: list exits
       Postcondition: none
 
 
@@ -68,27 +68,37 @@ CONSTRUCTORS
 
 PUBLIC MEMBER FUNCTIONS
    void updateRunTime(CircularDLL<Process> &list, int quan)
-      updateRunTime : updates the total time of each process in the list by subtracting quan
+      updateRunTime : updates the total time of each process in the list by subtracting quan, input is the list and the quan number
       Precondition: list contains valid process nodes
       Postcondition: total time of each process is updated
 
    void traverseAndDelete(CircularDLL<Process> &list)
-      traverseAndDelete : deletes processes with total time less than or equal to zero from the list by storing in temp list
+      traverseAndDelete : deletes processes with total time less than or equal to zero from the list by storing in temp list, input is the list
       Precondition: list contains valid process nodes
       Postcondition: processes with total time less than or equal to zero are deleted from the list
 
-   void print() - prints the process in the format "name of the process + the total time"
+   void print() - prints the process in the format "name of the process + the total time", no input or output
       Precondition: data stored in the node is valid and can be printed
-      Postcondition: the process is printed
+      Postcondition: calls CircularDLL's print which calls Node's print which prints the process
 
 
 // Main : the main program
 
-PUBLIC MEMBER VARIABLES
-   string YNinput; - User input for adding new processes (Y/N)
-   string input; - User input for quantum time and process name
-   int quanTime; - Quantum time for the simulation
-   int currTime; - Total time passed in the simulation
-   string pName; - Name of a new process to be added
-   int pTime; - Total time for a new process to be added
-   int cycleNum; - Number of cycles completed in the simulation
+VARIABLES
+   string YNinput; - user input for adding new processes (Y/N)
+   string input; - user input for quantum time and process name
+   int quanTime; - quantum time for the simulation
+   int currTime; - total time passed in the simulation
+   string pName; - name of the new process to be added
+   int pTime; - total time of the new process to be added
+   int cycleNum; - number of cycles completed in the simulation
+
+LOGIC
+   First, the first process object is created, a list is created using the first process object, and the rest of the process objects are added.
+   Next, a while loop asking for the quantum time is run, only numbers are accepted, then the initial list is printed.
+   Next, the cycle loop runs until all processes are completed:
+      the while loop starts by prompting the user if they want to add a process
+         if NO: the cycle runs, the times in the process list are updated, any expired processes are deleted, if the list is empty- the cycle is finished, otherwise print the updated list, and update currTime and cycleNum. then continue
+         if YES: the user enters a new name, the user enters a new time only accepting numbers, and the new process is added. then continue
+         if NEITHER: only accept Y or N, error message. then continue
+      

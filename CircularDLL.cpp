@@ -171,7 +171,7 @@ public:
 // Main program
 int main() {
     string YNinput; // Yes or No input
-    string input; // number user input
+    string input; // user input
     int quanTime; // quantum time
     int currTime; // total time passed
     string pName; // new process name
@@ -208,7 +208,7 @@ int main() {
     }
 
     // cycle loop: breaks when the process is finished
-    for (;;) {
+    while (true) {
         // ask user if they want to add a process
         cout << "Add new process? (Enter Y/N) ";
         cin >> YNinput; // yes or no answer
